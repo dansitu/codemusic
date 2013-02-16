@@ -1,0 +1,10 @@
+{
+      "name": "codemusic"
+    , "version": "0.0.1-001"
+    , "engines": { "node": ">=0.8.0"}
+    , "dependencies": {
+        "uglify-js": "*"
+        , "commander": "*"
+        , "underscore": "*"
+    }
+}
