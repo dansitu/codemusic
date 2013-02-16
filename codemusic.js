@@ -73,10 +73,16 @@ function do_stat() {
           var fileSubstring = file.substring(current.start.endpos);
           var firstParen = fileSubstring.indexOf("(")+1;
           var secondParen = fileSubstring.indexOf(")");
-          var paramString = fileSubstring.substring(firstParen, secondParen);
-          var commas = paramString.split(",").length;
 
-          console.log(indent+commas+" params");
+          var paramCount;
+          if(secondParen === firstParen){
+            paramCount = 0;
+          } else {
+            var paramString = fileSubstring.substring(firstParen, secondParen);
+            var paramCount = Math.max(1,paramString.split(",").length);
+          }
+
+          console.log(indent+"  "+paramCount+" params");
 
         }
 
