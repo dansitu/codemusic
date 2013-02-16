@@ -8,7 +8,7 @@
 
     if(nested){
 
-      function myFunc(){
+      function myFunc(some,param){
       
       }
     

@@ -53,7 +53,11 @@ var w = pro.ast_walker();
 var analyzing = [];
 function do_stat() {
     var ret;
-    if (this[0].start && analyzing.indexOf(this) < 0) {
+
+    var current = this[0];
+
+    if (current.start && analyzing.indexOf(this) < 0) {
+        // console.log(this[0])
         // without the `analyzing' hack, w.walk(this) would re-enter here leading
         // to infinite recursion
         analyzing.push(this);
@@ -63,7 +67,18 @@ function do_stat() {
         analyzing.forEach(function(){
           indent += "  ";
         });
-        console.log(indent + this[0].start.line + " " + this[0].start.value);
+        console.log(indent + current.start.line + " " + current.start.value);
+
+        if(current.start.value === "function"){
+          var fileSubstring = file.substring(current.start.endpos);
+          var firstParen = fileSubstring.indexOf("(")+1;
+          var secondParen = fileSubstring.indexOf(")");
+          var paramString = fileSubstring.substring(firstParen, secondParen);
+          var commas = paramString.split(",").length;
+
+          console.log(indent+commas+" params");
+
+        }
 
 
         ret = w.walk(this);
@@ -97,7 +112,7 @@ var new_ast = w.with_walkers({
     // "try"      : do_stat,
     "defun"    : do_stat,
     "function" : do_stat,
-    // "if"       : do_stat,
+    "if"       : do_stat,
     // "while"    : do_stat,
     // "do"       : do_stat,
     // "for"      : do_stat,
