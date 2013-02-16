@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Code Music</title>
+
+    <script src='./js/compiled-codemuncher.js'></script>
+
+    <script>
+      var muncher = new CodeMuncher(function(depth){
+        var current = this[0];
+
+        var indent = "";
+        for(var i=0;i<depth;i++){
+          indent += "  ";
+        }
+        console.log(indent + current.start.line + " " + current.start.value);
+
+        if(current.start.value === "function"){
+          var fileSubstring = file.substring(current.start.endpos);
+          var firstParen = fileSubstring.indexOf("(")+1;
+          var secondParen = fileSubstring.indexOf(")");
+
+          var paramCount;
+          if(secondParen === firstParen){
+            paramCount = 0;
+          } else {
+            var paramString = fileSubstring.substring(firstParen, secondParen);
+            var paramCount = Math.max(1,paramString.split(",").length);
+          }
+
+          console.log(indent+"  "+paramCount+" params");
+
+        }
+      
+      });
+      var file = "(function(){\n if(a===b){return 'x';}\n})"
+
+      muncher.munch(file);
+
+    </script>
+
+  </head>
+
+  <body>
+
+    
+
+  
+  </body>
+</html>
