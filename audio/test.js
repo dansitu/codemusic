@@ -40,6 +40,7 @@ var notesPerBar = 8;
 var noteLength = barLength / notesPerBar;
 var sequenceInterval = noteLength;
 var velocity = 127;
+var drumVelocity = 80;
 var melodyChannel = 0;
 var drumChannel = 1;
 var sequenceIndex = 0;
@@ -57,7 +58,7 @@ var synthesizeDrums = function() {
       midi.push({
         channel: drumChannel,
         note: 61,
-        velocity: velocity,
+        velocity: drumVelocity,
         delay: index * sequenceInterval + j * beatLength,
         length: beatLength,
       });
