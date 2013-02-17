@@ -10,16 +10,24 @@
 
       $(function(){
 
-        var munchSummary = [];
+        var munchPile = [];
+        var last;
 
-        var muncher = new CodeMuncher(function(depth){
+        var muncher = new CodeMuncher(function(depth, analyzing){
           var current = this[0];
 
-          var indent = "";
-          for(var i=0;i<depth;i++){
-            indent += "  ";
-          }
-          console.log(indent + current.start.line + " " + current.start.value);
+          var newChunk = {
+            type: current.start.value
+            , params: 0
+            , children: []
+            , depth: depth
+          };
+
+          // var indent = "";
+          // for(var i=0;i<depth;i++){
+          //   indent += "  ";
+          // }
+          // console.log(indent + current.start.line + " " + current.start.value);
 
           if(current.start.value === "function"){
             var fileSubstring = muncher.code.substring(current.start.endpos);
@@ -31,12 +39,16 @@
               paramCount = 0;
             } else {
               var paramString = fileSubstring.substring(firstParen, secondParen);
-              var paramCount = Math.max(1,paramString.split(",").length);
+              paramCount = Math.max(1,paramString.split(",").length);
             }
 
-            console.log(indent+"  "+paramCount+" params");
+            newChunk.params = paramCount;
+
+            // console.log(indent+"  "+paramCount+" params");
 
           }
+
+          munchPile.push(newChunk);
         
         });
 
@@ -48,6 +60,8 @@
           reader.onload = function(evt){
             muncher.munch(evt.target.result);
             // console.log(evt.target.result);
+
+            console.log(munchPile);
 
           
           }

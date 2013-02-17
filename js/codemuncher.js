@@ -36,7 +36,7 @@ CodeMuncher.prototype.munch = function(code){
           analyzing.push(this);
 
           // Call the per-line callback
-          self.eachLineCallback.call(this, analyzing.length);
+          self.eachLineCallback.call(this, analyzing.length, analyzing);
 
           ret = w.walk(this);
 
