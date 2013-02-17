@@ -77,15 +77,3 @@ var playDrums = function() {
   }
 };
 
-MIDI.loadPlugin({
-  api: 'webmidi',
-  soundfontUrl: './MIDI.js-master/soundfont/',
-  instruments: ['acoustic_grand_piano', 'synth_drum'],
-  callback: function() {
-    MIDI.setVolume(0, 127);
-    MIDI.setVolume(1, 127);
-    MIDI.programChange(1, 118);
-    playMunchPile(pile, 0);
-    playDrums();
-  },
-});

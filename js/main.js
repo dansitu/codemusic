@@ -69,7 +69,18 @@ $(function(){
         }
       }
 
-      console.log(munchTree);
+      MIDI.loadPlugin({
+        api: 'webmidi',
+        soundfontUrl: './audio/MIDI.js-master/soundfont/',
+        instruments: ['acoustic_grand_piano', 'synth_drum'],
+        callback: function() {
+          MIDI.setVolume(0, 127);
+          MIDI.setVolume(1, 127);
+          MIDI.programChange(1, 118);
+          playMunchPile(munchTree, 0);
+          playDrums();
+        },
+      });
 
     }
 
