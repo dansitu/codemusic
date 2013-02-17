@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Code Music</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/custom.css" rel="stylesheet" media="screen">
+
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="row cm-title">
+        <div class="span12">
+          <h1>Code Music</h1>
+          <div class="lead">Free your code's inner song <i class="icon-music"></i></div>
+        </div>
+      </div>
+
+      <div class="row cm-errors">
+        <div class="cm-alert-container span8 offset2">
+          <div class="alert alert-error hidden"></div>
+        </div>
+      </div>
+
+      <div class="row cm-controls">
+        <div id="dragBox" class="span8 offset2">
+          <div class="row">
+            <div class="cm-drag-label span8">
+              Drag a javascript file here
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row cm-credits">
+        <div class="span8 offset2">
+          Uses
+          <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a>,
+          <a href="https://github.com/douglascrockford/JSLint">JSLint</a>
+          and <a href="https://github.com/mudcube/MIDI.js">MIDI.js</a>
+          <br/>
+          By <a href="https://twitter.com/dansitu">@dansitu</a> and Ryan Brown for <a href="http://sf.musichackday.org/2013">sf.musichackday.org/2013</a>
+        </div>
+      </div>
+
+    </div>
+
+    <a href="https://github.com/dansitu/codemusic"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+
+    <!-- midi.js package -->
+    <script src="./audio/MIDI.js-master/js/MIDI/AudioDetect.js" type="text/javascript"></script>
+    <script src="./audio/MIDI.js-master/js/MIDI/LoadPlugin.js" type="text/javascript"></script>
+    <script src="./audio/MIDI.js-master/js/MIDI/Plugin.js" type="text/javascript"></script>
+    <script src="./audio/MIDI.js-master/js/MIDI/Player.js" type="text/javascript"></script>
+    <script src="./audio/MIDI.js-master/js/Window/DOMLoader.XMLHttp.js" type="text/javascript"></script>
+    <script src="./audio/MIDI.js-master/js/Window/DOMLoader.script.js" type="text/javascript"></script>
+    <!-- extras -->
+    <script src="./audio/MIDI.js-master/inc/WebMIDIAPI.js" type="text/javascript"></script>
+    <script src="./audio/MIDI.js-master/inc/Base64.js" type="text/javascript"></script>
+    <script src="./audio/MIDI.js-master/inc/base64binary.js" type="text/javascript"></script>
+
+    <script src='./js/jquery-1.9.1.js'></script>
+    <script src='./js/underscore.js'></script>
+    <script src='./js/backbone.js'></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/jslint.js"></script>
+    <script src='./js/compiled-codemuncher.js'></script>
+    <script src="./audio/test.js"></script>
+
+    <script src='./js/main.js'></script>
+
+  </head>
+
+  </body>
+</html>
