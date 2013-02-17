@@ -236,9 +236,9 @@ var play = function(midi) {
           if (MIDI.setCutoff) {
             MIDI.setCutoff(melodyChannel, cutoff);
           }
-          if(msg.text) {
-            EMITTER.trigger('newtext', msg.text);
-          }
+          // if(msg.text) {
+          //   EMITTER.trigger('newtext', msg.text);
+          // }
         }})(msg.cutoff), msg.delay * 1000 - diff - 3750);
     }
     setTimeout(function() { f(midi, b, b + notesPerSchedule, f); }, scheduleInterval);

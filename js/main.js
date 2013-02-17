@@ -22,10 +22,12 @@ $(function(){
   };
 
   if(EMITTER){
-    EMITTER.on('newtext', function(text){
-      console.log(text);
-    
-    });
+    // EMITTER.on('newtext', function(text){
+    //   setTimeout(function(){
+    //     $(".cm-code").text(text);
+    //   }, 1);
+    // 
+    // });
   
   }
     
