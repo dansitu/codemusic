@@ -5264,6 +5264,8 @@ CodeMuncher.prototype.munch = function(code){
 
   var self = this;
 
+  self.code = code;
+
   try {
       var ast = self.jsp.parse(code, false, true);
   } catch(ex){

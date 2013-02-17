@@ -3,48 +3,68 @@
   <head>
     <title>Code Music</title>
 
+    <script src='./js/jquery-1.9.1.js'></script>
     <script src='./js/compiled-codemuncher.js'></script>
 
     <script>
-      var muncher = new CodeMuncher(function(depth){
-        var current = this[0];
 
-        var indent = "";
-        for(var i=0;i<depth;i++){
-          indent += "  ";
-        }
-        console.log(indent + current.start.line + " " + current.start.value);
+      $(function(){
 
-        if(current.start.value === "function"){
-          var fileSubstring = file.substring(current.start.endpos);
-          var firstParen = fileSubstring.indexOf("(")+1;
-          var secondParen = fileSubstring.indexOf(")");
+        var munchSummary = [];
 
-          var paramCount;
-          if(secondParen === firstParen){
-            paramCount = 0;
-          } else {
-            var paramString = fileSubstring.substring(firstParen, secondParen);
-            var paramCount = Math.max(1,paramString.split(",").length);
+        var muncher = new CodeMuncher(function(depth){
+          var current = this[0];
+
+          var indent = "";
+          for(var i=0;i<depth;i++){
+            indent += "  ";
+          }
+          console.log(indent + current.start.line + " " + current.start.value);
+
+          if(current.start.value === "function"){
+            var fileSubstring = muncher.code.substring(current.start.endpos);
+            var firstParen = fileSubstring.indexOf("(")+1;
+            var secondParen = fileSubstring.indexOf(")");
+
+            var paramCount;
+            if(secondParen === firstParen){
+              paramCount = 0;
+            } else {
+              var paramString = fileSubstring.substring(firstParen, secondParen);
+              var paramCount = Math.max(1,paramString.split(",").length);
+            }
+
+            console.log(indent+"  "+paramCount+" params");
+
+          }
+        
+        });
+
+        $("#go").click(function(){
+        
+          var selectedFile = $("#fileBrowser").get(0).files[0];
+          var reader = new FileReader();
+
+          reader.onload = function(evt){
+            muncher.munch(evt.target.result);
+            // console.log(evt.target.result);
+
+          
           }
 
-          console.log(indent+"  "+paramCount+" params");
+          reader.readAsText(selectedFile);
 
-        }
-      
+        });
+
       });
-      var file = "(function(){\n if(a===b){return 'x';}\n})"
-
-      muncher.munch(file);
 
     </script>
 
   </head>
 
   <body>
-
-    
-
+    <input type="file" id="fileBrowser">
+    <input type="button" id="go" value="Go">
   
   </body>
 </html>
