@@ -6,22 +6,44 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/custom.css" rel="stylesheet" media="screen">
 
   </head>
 
   <body>
 
     <div class="container">
-      <div class="row">
+      <div class="row cm-title">
         <div class="span12">
           <h1>Code Music</h1>
+          <div class="lead">Create music from your Javascript</div>
         </div>
       </div>
 
-      <div class="row">
-        <input type="file" id="fileBrowser">
-        <input type="button" id="go" value="Go">
+      <!-- <div class="row cm-instructions"> -->
+      <!--   <div class="span12"> -->
+      <!--   </div> -->
+      <!-- </div> -->
+
+      <div class="row cm-dragbox">
       </div>
+
+      <div class="row cm-controls">
+        <div id="dragBox" class="span8 offset2">
+          <div class="row">
+            <div class="cm-drag-label span8">
+              Drag in a file
+            </div>
+            <div class="cm-browse span4 offset2">
+              <div class="cm-browse-label">Or just browse</div>
+              <input type="file" id="fileBrowser">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <input type="button" id="go" value="Go">
+
     </div>
 
     <!-- midi.js package -->

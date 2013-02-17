@@ -1,0 +1,44 @@
+.cm-title {
+  text-align: center;
+  padding-top: 40px;
+}
+
+.cm-title h1 {
+  font-size: 100px;
+  line-height: 120px
+}
+
+.cm-controls {
+
+  padding-top: 20px;
+
+}
+
+.cm-drag-label {
+
+  padding-top: 80px;
+  font-size: 28px;
+  line-height: 80px;
+
+}
+
+.cm-browse-label {
+
+
+}
+
+.cm-browse {
+  text-align: center;
+  border: 4px dashed #c2bcbc;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+#dragBox {
+
+  height: 250px;
+  text-align: center;
+  border: 4px dashed #c23b39;
+  border-radius: 10px;
+
+}
