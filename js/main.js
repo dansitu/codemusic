@@ -34,8 +34,9 @@ $(function(){
         MIDI.setVolume(0, 127);
         MIDI.setVolume(1, 127);
         MIDI.programChange(1, 118);
-        playMunchPile(munched, 0);
-        playDrums();
+        var midi = synthesize(munched);
+        append(midi, synthesizeDrums());
+        play(midi);
       },
     });
   }

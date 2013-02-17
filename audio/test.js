@@ -105,7 +105,7 @@ var scheduleInterval = 1000;
 
 var play = function(midi) {
   midi.sort(function(a, b) {
-    return a.delay < b.delay;
+    return a.delay - b.delay;
   });
   var playNext = function(midi, a, b, f) {
     for (var i = a; i < midi.length && i < b; i++) {
