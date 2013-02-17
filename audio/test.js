@@ -113,7 +113,7 @@ var synthesizeMunch = function(munch, depth) {
   var midi = [
     {
       channel: melodyChannel,
-      note: computeScaleNote(startNote, depth + noteMod),
+      note: computeScaleNote(startNote, depth) + noteMod,
       velocity: velocity,
       delay: sequenceIndex * sequenceInterval,
       // length: munch.length / 400,
