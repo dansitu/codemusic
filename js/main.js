@@ -63,6 +63,7 @@ $(function(){
             MIDI.setVolume(melodyChannel, 120);
             MIDI.setBank(melodyChannel, 1);
             MIDI.programChange(melodyChannel, 2);
+            MIDI.setCutoff(melodyChannel, 40);
 
             //MIDI.setVolume(padChannel, 127);
             //MIDI.setBank(padChannel, 1);

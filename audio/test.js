@@ -33,7 +33,7 @@ var pile = [
 
 var startNote = MIDI.keyToNote['C1'];
 var startDepth = 40;
-var bpm = 140;
+var bpm = 160;
 var beatLength = 1 / (bpm / 60);
 var beatsPerBar = 4;
 var barLength = beatLength * beatsPerBar;
@@ -49,16 +49,19 @@ var drumChannel = 1;
 var bassChannel = 2;
 var padChannel = 3;
 var sequenceIndex = 0;
+var initialSequenceDelay = notesPerBar * 6;
+var startTime = new Date().getTime();
 
 var resetAudio = function(){
-  sequenceIndex = 0;
+  sequenceIndex = initialSequenceDelay;
+  startTime = new Date().getTime();
 }
 
 var synthesizeDrums = function() {
   var midi = [];
   var bars = sequenceIndex / notesPerBar;
   for (var i = 0; i < bars; i++) {
-    var index = i * notesPerBar;
+    var index = initialSequenceDelay + i * notesPerBar;
     for (var j = 0; j < beatsPerBar; j++) {
       midi.push({
         channel: drumChannel,
@@ -182,7 +185,8 @@ var synthesizeMunch = function(munch, depth) {
       velocity: Math.min(127, Math.floor(velocity * munch.length / 500)),
       delay: sequenceIndex * sequenceInterval,
       //length: Math.floor(munch.length / 500),
-      length: noteLength
+      length: noteLength,
+      cutoff: Math.min(40 + shitnessRatio * 127, 127),
     },
   ];
   sequenceIndex++;
@@ -210,18 +214,27 @@ var synthesize = function(pile) {
   return synthesizeDepth(pile, startDepth);
 };
 
-var notesPerSchedule = 20;
+var notesPerSchedule = 40;
 var scheduleInterval = 1000;
 
 var play = function(midi) {
   midi.sort(function(a, b) {
     return a.delay - b.delay;
   });
+
   var playNext = function(midi, a, b, f) {
+    var currentTime = new Date().getTime();
+    var diff = currentTime - startTime;
     for (var i = a; i < midi.length && i < b; i++) {
       var msg = midi[i];
       MIDI.noteOn(msg.channel, msg.note, msg.velocity, msg.delay);
       MIDI.noteOff(msg.channel, msg.note, msg.delay + msg.length);
+      setTimeout((function(cutoff) {
+        return function() {
+          if (MIDI.setCutoff) {
+            MIDI.setCutoff(melodyChannel, cutoff);
+          }
+        }})(msg.cutoff), msg.delay * 1000 - diff - 3750);
     }
     setTimeout(function() { f(midi, b, b + notesPerSchedule, f); }, scheduleInterval);
   };

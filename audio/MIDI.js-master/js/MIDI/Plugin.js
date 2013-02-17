@@ -36,6 +36,7 @@ var setPlugin = function(root) {
 	MIDI.getInput = root.getInput;
 	MIDI.getOutputs = root.getOutputs;
   MIDI.setBank = root.setBank;
+  MIDI.setCutoff = root.setCutoff;
 };
 
 /*
@@ -56,6 +57,10 @@ var setPlugin = function(root) {
 
   root.setBank = function(channel, bank) {
     output.send([0xB0 + channel, 0x00, bank]);
+  };
+
+  root.setCutoff = function(channel, cutoff) {
+    output.send([0xB0 + channel, 0x28, cutoff]);
   };
 
 	root.setVolume = function (channel, volume) { // set channel volume
