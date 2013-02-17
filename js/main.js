@@ -20,6 +20,14 @@ $(function(){
 
     return false;
   };
+
+  if(EMITTER){
+    EMITTER.on('newtext', function(text){
+      console.log(text);
+    
+    });
+  
+  }
     
   // ## readSelectedFile
   // Reads the file currently highlighted in the file browser

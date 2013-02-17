@@ -1,3 +1,5 @@
+var EMITTER = {}
+_.extend(EMITTER, Backbone.Events);
 
 var pile = [
   {
@@ -176,7 +178,6 @@ var synthesizeMunch = function(munch, depth) {
   var noteMod = 0;
   if(munch.lintErrors > 0){
     noteMod -= 9;
-    console.log("lint error detected");
   }
   var midi = [
     {
@@ -187,6 +188,7 @@ var synthesizeMunch = function(munch, depth) {
       //length: Math.floor(munch.length / 500),
       length: noteLength,
       cutoff: Math.min(40 + shitnessRatio * 127, 127),
+      text: munch.text
     },
   ];
   sequenceIndex++;
@@ -233,6 +235,9 @@ var play = function(midi) {
         return function() {
           if (MIDI.setCutoff) {
             MIDI.setCutoff(melodyChannel, cutoff);
+          }
+          if(msg.text) {
+            EMITTER.trigger('newtext', msg.text);
           }
         }})(msg.cutoff), msg.delay * 1000 - diff - 3750);
     }
