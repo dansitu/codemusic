@@ -5258,6 +5258,8 @@ var CodeMuncher = function(eachLineCallback){
 
   this.eachLineCallback = eachLineCallback;
 
+  this.munchPile = [];
+
 }
 
 CodeMuncher.prototype.munch = function(code){
@@ -5265,6 +5267,8 @@ CodeMuncher.prototype.munch = function(code){
   var self = this;
 
   self.code = code;
+
+  self.munchPile = [];
 
   try {
       var ast = self.jsp.parse(code, false, true);
@@ -5311,7 +5315,7 @@ CodeMuncher.prototype.munch = function(code){
       // "try"      : do_stat,
       "defun"    : do_stat,
       "function" : do_stat,
-      "if"       : do_stat,
+      // "if"       : do_stat,
       // "while"    : do_stat,
       // "do"       : do_stat,
       // "for"      : do_stat,
