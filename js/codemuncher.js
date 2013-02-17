@@ -44,6 +44,9 @@ CodeMuncher.prototype.munch = function(code){
             , children: []
             , depth: depth
             , length: current.end.pos - current.start.pos
+            , start: current.start.line
+            , end: current.end.line
+            , lintErrors: 0
           };
 
           if(current.start.value === "function"){
@@ -97,6 +100,47 @@ CodeMuncher.prototype.munch = function(code){
   }, function(){
       return w.walk(ast);
   });
+
+  // By now the munchpile should be full. Let's run the code 
+  // through jslint and augment the munchpile data
+  var lint = JSLINT(code);
+  // Were there any errors?
+  if(!lint){
+    JSLINT.errors.forEach(function(error){
+      // error is sometimes null??
+      if(!error) return;
+      // Step through the munchpile and find the best
+      // munch (in terms of being where the error happened
+      var best;
+      for(var i=0;i<munchPile.length;i++){
+        var currMunch = munchPile[i];
+        // If this err was outside this munch, forget this munch
+        if(error.line < currMunch.start || error.line > currMunch.end){
+          continue;
+        }
+        // If we don't have a best yet, use thisone
+        if(!best){
+          best = currMunch;
+          continue;
+        }
+        // dist from start plus dist from end
+        var currDist = (error.line - currMunch.start) + (currMunch.end - error.line);
+        var lastBestDist = (error.line - best.start) + (best.end - error.line);
+
+        if(currDist < lastBestDist){
+          best = currMunch;
+        }
+      
+      }
+
+      // If we found a match, it has lint errors, so tell it that it does
+      if(best) {
+        best.lintErrors += 1;
+      }
+    
+    });
+  
+  }
 
 
   var munchTree = [];
