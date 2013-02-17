@@ -29,9 +29,10 @@
 
 .cm-browse {
   text-align: center;
-  border: 4px dashed #c2bcbc;
-  border-radius: 10px;
   font-size: 18px;
+}
+
+.cm-browse input {
 }
 
 #dragBox {
@@ -40,5 +41,13 @@
   text-align: center;
   border: 4px dashed #c23b39;
   border-radius: 10px;
+  background-color: #dddddd;
+
+}
+
+#dragBox.hover {
+
+  border-color: red;
+  background-color: #cccccc;
 
 }

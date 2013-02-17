@@ -7,8 +7,19 @@ $(function(){
   // The muncher is what 'digests' our code
   var muncher = new CodeMuncher();
 
-  // If the 'go' button is clicked, read the file
-  $("#go").click(readSelectedFile)
+  var doc = document.documentElement;
+  doc.ondragover = function () { this.className = 'hover'; return false; };
+  doc.ondragend = function () { this.className = ''; return false; };
+  doc.ondrop = function (event) {
+    event.preventDefault && event.preventDefault();
+    this.className = '';
+
+    // now do something with:
+    // var files = event.dataTransfer.files;
+    fileReader.readAsText(event.dataTransfer.files[0]);
+
+    return false;
+  };
     
   // ## readSelectedFile
   // Reads the file currently highlighted in the file browser
