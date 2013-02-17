@@ -31,8 +31,8 @@ var pile = [
   },
 ];
 
-var startNote = MIDI.keyToNote['C4'];
-var bpm = 120;
+var startNote = MIDI.keyToNote['C1'];
+var bpm = 160;
 var beatLength = 1 / (bpm / 60);
 var beatsPerBar = 4;
 var barLength = beatLength * beatsPerBar;
@@ -96,13 +96,18 @@ var computeScaleNote = function(startNote, depth) {
 };
 
 var synthesizeMunch = function(munch, depth) {
+
+  if(munch.type === 'function'){
+    depth -= 8;
+  }
   var midi = [
     {
       channel: melodyChannel,
       note: computeScaleNote(startNote, depth),
       velocity: velocity,
       delay: sequenceIndex * sequenceInterval,
-      length: noteLength,
+      // length: munch.length / 400,
+      length: noteLength
     },
   ];
   sequenceIndex++;
@@ -124,7 +129,7 @@ var synthesizeDepth = function(pile, depth) {
 };
 
 var synthesize = function(pile) {
-  return synthesizeDepth(pile, 0);
+  return synthesizeDepth(pile, 30);
 };
 
 var notesPerSchedule = 20;

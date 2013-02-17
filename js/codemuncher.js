@@ -43,6 +43,7 @@ CodeMuncher.prototype.munch = function(code){
             , params: 0
             , children: []
             , depth: depth
+            , length: current.end.pos - current.start.pos
           };
 
           if(current.start.value === "function"){
