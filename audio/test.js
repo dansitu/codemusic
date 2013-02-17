@@ -31,7 +31,7 @@ var pile = [
   },
 ];
 
-var startNote = MIDI.keyToNote['C5'];
+var startNote = MIDI.keyToNote['C4'];
 var bpm = 120;
 var beatLength = 1 / (bpm / 60);
 var beatsPerBar = 4;
@@ -68,11 +68,34 @@ var append = function(a, b) {
   }
 };
 
+var scaleContains = function(note) {
+  var key = MIDI.noteToKey[note];
+  return key.length === 2 &&
+    (key[0] === 'C' ||
+     key[0] === 'D' ||
+     key[0] === 'E' ||
+     key[0] === 'F' ||
+     key[0] === 'G' ||
+     key[0] === 'A' ||
+     key[0] === 'B');
+};
+
+var computeScaleNote = function(startNote, depth) {
+  var note = startNote;
+  for (var i = 0; i < depth; i++) {
+    note++;
+    while (!scaleContains(note)) {
+      note++;
+    }
+  }
+  return note;
+};
+
 var synthesizeMunch = function(munch, depth) {
   var midi = [
     {
       channel: melodyChannel,
-      note: startNote - depth,
+      note: computeScaleNote(startNote, depth),
       velocity: velocity,
       delay: sequenceIndex * sequenceInterval,
       length: noteLength,
@@ -118,8 +141,7 @@ var play = function(midi) {
   playNext(midi, 0, notesPerSchedule, playNext);
 };
 
-/*
-MIDI.loadPlugin({
+/*MIDI.loadPlugin({
   api: 'webmidi',
   soundfontUrl: './MIDI.js-master/soundfont/',
   instruments: ['acoustic_grand_piano', 'synth_drum'],
