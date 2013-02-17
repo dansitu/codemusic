@@ -6,8 +6,6 @@ var CodeMuncher = function(eachLineCallback){
 
   this.eachLineCallback = eachLineCallback;
 
-  this.munchPile = [];
-
 }
 
 CodeMuncher.prototype.munch = function(code){
@@ -15,8 +13,6 @@ CodeMuncher.prototype.munch = function(code){
   var self = this;
 
   self.code = code;
-
-  self.munchPile = [];
 
   try {
       var ast = self.jsp.parse(code, false, true);
@@ -27,6 +23,8 @@ CodeMuncher.prototype.munch = function(code){
   var w = self.pro.ast_walker();
 
   var analyzing = [];
+
+  var munchPile = [];
 
   // Gets called by walker
   function do_stat() {
@@ -66,7 +64,7 @@ CodeMuncher.prototype.munch = function(code){
 
           }
 
-          self.munchPile.push(newChunk);
+          munchPile.push(newChunk);
 
           ret = w.walk(this);
 
@@ -100,6 +98,29 @@ CodeMuncher.prototype.munch = function(code){
   }, function(){
       return w.walk(ast);
   });
+
+
+  var munchTree = [];
+
+  var munches = 0;
+  for(var i=munchPile.length-1;i>=0;i--){
+    var curr = munchPile[i];
+    // Put depth1 in output
+    if(curr.depth === 1) {
+      munchTree.splice(0, 0, curr);
+      continue;
+    }
+    // Find the nearest thing with a lower depth
+    // and add this as a child
+    for(var x=i;x>=0;x--){
+      if(munchPile[x].depth < curr.depth){
+        munchPile[x].children.splice(0, 0, curr);
+        break;
+      }
+    }
+  }
+
+  return munchTree;
 
 }
 
