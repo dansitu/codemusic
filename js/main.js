@@ -51,9 +51,29 @@ $(function(){
 
           resetAudio();
 
-          MIDI.setVolume(0, 127);
-          MIDI.setVolume(1, 127);
-          MIDI.programChange(1, 118);
+          if (MIDI.setBank) {
+            MIDI.setVolume(bassChannel, 127);
+            MIDI.setBank(bassChannel, 1);
+            MIDI.programChange(bassChannel, 0);
+
+            MIDI.setVolume(drumChannel, 100);
+            MIDI.setBank(drumChannel, 1);
+            MIDI.programChange(drumChannel, 1);
+
+            MIDI.setVolume(melodyChannel, 120);
+            MIDI.setBank(melodyChannel, 1);
+            MIDI.programChange(melodyChannel, 2);
+
+            //MIDI.setVolume(padChannel, 127);
+            //MIDI.setBank(padChannel, 1);
+            //MIDI.programChange(padChannel, 3);
+          } else {
+            MIDI.setVolume(melodyChannel, 127);
+            MIDI.programChange(melodyChannel, 0);
+            MIDI.setVolume(drumChannel, 60);
+            MIDI.programChange(drumChannel, 118);
+          }
+
           var midi = synthesize(munched);
           append(midi, synthesizeDrums());
           play(midi);

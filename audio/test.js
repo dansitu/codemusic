@@ -32,17 +32,22 @@ var pile = [
 ];
 
 var startNote = MIDI.keyToNote['C1'];
-var bpm = 160;
+var startDepth = 40;
+var bpm = 140;
 var beatLength = 1 / (bpm / 60);
 var beatsPerBar = 4;
 var barLength = beatLength * beatsPerBar;
 var notesPerBar = 8;
 var noteLength = barLength / notesPerBar;
 var sequenceInterval = noteLength;
-var velocity = 127;
-var drumVelocity = 80;
+var velocity = 100;
+var drumVelocity = 100;
+var bassVelocity = 100;
+var padVelocity = 100;
 var melodyChannel = 0;
 var drumChannel = 1;
+var bassChannel = 2;
+var padChannel = 3;
 var sequenceIndex = 0;
 
 var resetAudio = function(){
@@ -57,12 +62,71 @@ var synthesizeDrums = function() {
     for (var j = 0; j < beatsPerBar; j++) {
       midi.push({
         channel: drumChannel,
-        note: 61,
+        note: MIDI.keyToNote['B3'],
         velocity: drumVelocity,
         delay: index * sequenceInterval + j * beatLength,
-        length: beatLength,
+        length: beatLength/4,
       });
     }
+    var bassLength = beatLength/4;
+    midi.push({
+      channel: bassChannel,
+      note: MIDI.keyToNote['A2'],
+      velocity: bassVelocity,
+      delay: index * sequenceInterval,
+      length: bassLength,
+    });
+    midi.push({
+      channel: bassChannel,
+      note: MIDI.keyToNote['A3'],
+      velocity: bassVelocity,
+      delay: index * sequenceInterval + 2 * bassLength,
+      length: bassLength,
+    });
+    midi.push({
+      channel: bassChannel,
+      note: MIDI.keyToNote['A3'],
+      velocity: bassVelocity,
+      delay: index * sequenceInterval + 4 * bassLength,
+      length: bassLength,
+    });
+    midi.push({
+      channel: bassChannel,
+      note: MIDI.keyToNote['A3'],
+      velocity: bassVelocity,
+      delay: index * sequenceInterval + 8 * bassLength,
+      length: bassLength,
+    });
+    midi.push({
+      channel: bassChannel,
+      note: MIDI.keyToNote['A3'],
+      velocity: bassVelocity,
+      delay: index * sequenceInterval + 14 * bassLength,
+      length: bassLength,
+    });
+    // Pad.
+    /*
+    midi.push({
+      channel: padChannel,
+      note: MIDI.keyToNote['A2'],
+      velocity: padVelocity,
+      delay: index * sequenceInterval,
+      length: barLength,
+    });
+    midi.push({
+      channel: padChannel,
+      note: MIDI.keyToNote['E3'],
+      velocity: padVelocity,
+      delay: index * sequenceInterval,
+      length: barLength,
+    });
+    midi.push({
+      channel: padChannel,
+      note: MIDI.keyToNote['Db4'],
+      velocity: padVelocity,
+      delay: index * sequenceInterval,
+      length: barLength,
+    });*/
   }
   return midi;
 };
@@ -75,14 +139,14 @@ var append = function(a, b) {
 
 var scaleContains = function(note) {
   var key = MIDI.noteToKey[note];
-  return key.length === 2 &&
-    (key[0] === 'C' ||
-     key[0] === 'D' ||
-     key[0] === 'E' ||
-     key[0] === 'F' ||
-     key[0] === 'G' ||
-     key[0] === 'A' ||
-     key[0] === 'B');
+  key = key.substr(0, key.length - 1);
+  return key === 'Db' ||
+    key === 'D' ||
+    key === 'E' ||
+    key === 'Gb' ||
+    key === 'Ab' ||
+    key === 'A' ||
+    key === 'B';
 };
 
 var computeScaleNote = function(startNote, depth) {
@@ -100,6 +164,7 @@ var synthesizeMunch = function(munch, depth) {
 
   if(munch.type === 'function'){
     depth -= 8;
+    //depth -= Math.floor(munch.length / 500);
   }
   // Errors per line in each munch
   var shitnessRatio = munch.lintErrors/(munch.end - munch.start);
@@ -114,13 +179,16 @@ var synthesizeMunch = function(munch, depth) {
     {
       channel: melodyChannel,
       note: computeScaleNote(startNote, depth) + noteMod,
-      velocity: velocity,
+      velocity: Math.min(127, Math.floor(velocity * munch.length / 500)),
       delay: sequenceIndex * sequenceInterval,
-      // length: munch.length / 400,
+      //length: Math.floor(munch.length / 500),
       length: noteLength
     },
   ];
   sequenceIndex++;
+  if (munch.length >= 300) {
+    sequenceIndex++;
+  }
   if (munch.children) {
     append(midi, synthesizeDepth(munch.children, depth + 1));
   }
@@ -139,7 +207,7 @@ var synthesizeDepth = function(pile, depth) {
 };
 
 var synthesize = function(pile) {
-  return synthesizeDepth(pile, 30);
+  return synthesizeDepth(pile, startDepth);
 };
 
 var notesPerSchedule = 20;

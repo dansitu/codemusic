@@ -35,6 +35,7 @@ var setPlugin = function(root) {
 	MIDI.stopAllNotes = root.stopAllNotes;
 	MIDI.getInput = root.getInput;
 	MIDI.getOutputs = root.getOutputs;
+  MIDI.setBank = root.setBank;
 };
 
 /*
@@ -52,6 +53,11 @@ var setPlugin = function(root) {
 	var root = MIDI.WebMIDI = {
 		api: "webmidi"
 	};
+
+  root.setBank = function(channel, bank) {
+    output.send([0xB0 + channel, 0x00, bank]);
+  };
+
 	root.setVolume = function (channel, volume) { // set channel volume
 		output.send([0xB0 + channel, 0x07, volume]);
 	};
@@ -100,7 +106,7 @@ var setPlugin = function(root) {
 		setPlugin(root);
 		navigator.requestMIDIAccess(function (access) {
 			plugin = access;
-			output = plugin.getOutput(0);
+			output = plugin.getOutput(2);
 			if (conf.callback) conf.callback();
 		}, function (err) { // well at least we tried!
 			if (window.webkitAudioContext) { // Chrome
