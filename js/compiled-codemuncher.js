@@ -5264,11 +5264,7 @@ CodeMuncher.prototype.munch = function(code){
 
   var self = this;
 
-  try {
-      var ast = self.jsp.parse(code, false, true);
-  } catch(ex){
-      console.log("Exception: ", ex);
-  }
+  var ast = self.jsp.parse(code, false, true);
 
   var w = self.pro.ast_walker();
 

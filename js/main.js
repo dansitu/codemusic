@@ -7,12 +7,12 @@ $(function(){
   // The muncher is what 'digests' our code
   var muncher = new CodeMuncher();
 
-  var doc = document.documentElement;
-  doc.ondragover = function () { this.className = 'hover'; return false; };
-  doc.ondragend = function () { this.className = ''; return false; };
+  var doc = document.getElementById("dragBox");
+  doc.ondragover = function () { $(this).addClass('hover'); return false; };
+  doc.ondragend = function () { $(this).removeClass('hover'); return false; };
   doc.ondrop = function (event) {
     event.preventDefault && event.preventDefault();
-    this.className = '';
+    $(this).removeClass('hover');
 
     // now do something with:
     // var files = event.dataTransfer.files;
@@ -35,24 +35,39 @@ $(function(){
   // When the fileReader has loaded a file, munch and play it!
   function _fileLoaded(evt){
 
-    var munched = muncher.munch(evt.target.result);
+    try { 
+      var munched = muncher.munch(evt.target.result);
+    } catch(ex){
+      errorOut(ex, "Couldn't parse this file!");
+      return;
+    }
 
-    MIDI.loadPlugin({
-      api: 'webmidi',
-      soundfontUrl: './audio/MIDI.js-master/soundfont/',
-      instruments: ['acoustic_grand_piano', 'synth_drum'],
-      callback: function() {
+    try {
+      MIDI.loadPlugin({
+        api: 'webmidi',
+        soundfontUrl: './audio/MIDI.js-master/soundfont/',
+        instruments: ['acoustic_grand_piano', 'synth_drum'],
+        callback: function() {
 
-        resetAudio();
+          resetAudio();
 
-        MIDI.setVolume(0, 127);
-        MIDI.setVolume(1, 127);
-        MIDI.programChange(1, 118);
-        var midi = synthesize(munched);
-        append(midi, synthesizeDrums());
-        play(midi);
-      },
-    });
+          MIDI.setVolume(0, 127);
+          MIDI.setVolume(1, 127);
+          MIDI.programChange(1, 118);
+          var midi = synthesize(munched);
+          append(midi, synthesizeDrums());
+          play(midi);
+        },
+      });
+    } catch(ex){
+      errorOut(ex, "Error during playback!");
+      return;
+    }
+  }
+
+  function errorOut(err, message){
+    console.log(err);
+    $(".cm-errors .alert").text(message).removeClass("hidden");
   }
 
 });

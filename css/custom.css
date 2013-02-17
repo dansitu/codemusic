@@ -8,6 +8,15 @@
   line-height: 120px
 }
 
+.cm-errors {
+  text-align: center;
+  color: red;
+}
+
+.hidden {
+  display: none;
+}
+
 .cm-controls {
 
   padding-top: 20px;
