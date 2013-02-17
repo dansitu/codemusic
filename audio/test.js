@@ -101,10 +101,19 @@ var synthesizeMunch = function(munch, depth) {
   if(munch.type === 'function'){
     depth -= 8;
   }
+  // Errors per line in each munch
+  var shitnessRatio = munch.lintErrors/(munch.end - munch.start);
+  // console.log(shitnessRatio);
+  // Modify the note if there are lint errors
+  var noteMod = 0;
+  if(munch.lintErrors > 0){
+    noteMod -= 9;
+    console.log("lint error detected");
+  }
   var midi = [
     {
       channel: melodyChannel,
-      note: computeScaleNote(startNote, depth),
+      note: computeScaleNote(startNote, depth + noteMod),
       velocity: velocity,
       delay: sequenceIndex * sequenceInterval,
       // length: munch.length / 400,
