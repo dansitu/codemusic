@@ -44,6 +44,10 @@ var melodyChannel = 0;
 var drumChannel = 1;
 var sequenceIndex = 0;
 
+var resetAudio = function(){
+  sequenceIndex = 0;
+}
+
 var synthesizeDrums = function() {
   var midi = [];
   var bars = sequenceIndex / notesPerBar;
