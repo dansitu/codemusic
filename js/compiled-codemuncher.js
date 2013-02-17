@@ -5264,8 +5264,6 @@ CodeMuncher.prototype.munch = function(code){
 
   var self = this;
 
-  self.code = code;
-
   try {
       var ast = self.jsp.parse(code, false, true);
   } catch(ex){
@@ -5300,7 +5298,7 @@ CodeMuncher.prototype.munch = function(code){
           };
 
           if(current.start.value === "function"){
-            var fileSubstring = self.code.substring(current.start.endpos);
+            var fileSubstring = code.substring(current.start.endpos);
             var firstParen = fileSubstring.indexOf("(")+1;
             var secondParen = fileSubstring.indexOf(")");
 
