@@ -1,37 +1,6 @@
 $(function(){
 
-  var muncher = new CodeMuncher(function(depth, analyzing){
-    var current = this[0];
-
-    var newChunk = {
-      type: current.start.value
-      , params: 0
-      , children: []
-      , depth: depth
-    };
-
-    if(current.start.value === "function"){
-      var fileSubstring = muncher.code.substring(current.start.endpos);
-      var firstParen = fileSubstring.indexOf("(")+1;
-      var secondParen = fileSubstring.indexOf(")");
-
-      var paramCount;
-      if(secondParen === firstParen){
-        paramCount = 0;
-      } else {
-        var paramString = fileSubstring.substring(firstParen, secondParen);
-        paramCount = Math.max(1,paramString.split(",").length);
-      }
-
-      newChunk.params = paramCount;
-
-      // console.log(indent+"  "+paramCount+" params");
-
-    }
-
-    muncher.munchPile.push(newChunk);
-  
-  });
+  var muncher = new CodeMuncher()
 
   $("#go").click(function(){
   
